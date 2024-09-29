@@ -35,19 +35,20 @@ namespace Pcf.Administration.DataAccess.Repositories
             var entity = await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
             return entity;
         }
-        public Task<IEnumerable<T>> GetRangeByIdsAsync(List<Guid> ids)
+        public async Task<IEnumerable<T>> GetRangeByIdsAsync(List<Guid> ids)
         {
-            throw new NotImplementedException();
+            var entities = await _collection.FindAsync(x => ids.Contains(x.Id));
+            return await entities.ToListAsync();
         }
 
-        public Task<T> GetFirstWhere(Expression<Func<T, bool>> predicate)
+        public async Task<T> GetFirstWhere(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _collection.Find(predicate).FirstOrDefaultAsync();
         }
 
-        public Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await (await _collection.FindAsync(predicate)).ToListAsync();
         }
 
         public async Task AddAsync(T entity)
@@ -59,9 +60,9 @@ namespace Pcf.Administration.DataAccess.Repositories
             await _collection.FindOneAndReplaceAsync(x => x.Id == entity.Id, entity);
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _collection.FindOneAndDeleteAsync(x => x.Equals(entity));
         }     
 
     }
