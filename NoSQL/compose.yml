@@ -65,6 +65,17 @@ services:
       - 5435:5432
     environment: 
       - POSTGRES_PASSWORD=docker
+  #Administration Db mongo
+  promocode-factory-giving-to-customer-db-mongo:
+    image: "mongo:latest"
+    container_name: 'promocode-factory-giving-to-customer-db-mongo'
+    restart: always
+    ports: 
+      - 27019:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=docker
+
   #GivingToCustomer Api
   promocode-factory-giving-to-customer-api:
     build: src/Pcf.GivingToCustomer/
